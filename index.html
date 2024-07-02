@@ -229,7 +229,7 @@
 
         function loadTemplate(templateName) {
             const iframe = document.getElementById('demoFrame');
-            iframe.src = `./themes/${templateName}/index.html`;
+            iframe.src = `./templates/${templateName}/index.html`;
             updateURLParameter('template', templateName);
         }
 
@@ -243,11 +243,11 @@
             const firstTheme = themeList.querySelector('li');
             if (!templateName && firstTheme) {
                 const defaultTemplate = firstTheme.getAttribute('data-template');
-                iframe.src = `./themes/${defaultTemplate}/index.html`;
+                iframe.src = `./templates/${defaultTemplate}/index.html`;
                 updateURLParameter('template', defaultTemplate);
             } else {
                 if (templateName) {
-                    iframe.src = `./themes/${templateName}/index.html`;
+                    iframe.src = `./templates/${templateName}/index.html`;
                 }
             }
 
