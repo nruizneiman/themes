@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo de Plantilla</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            background: linear-gradient(180deg, #2c2c2c, #000);
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            color: white;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+        .sidebar h2 {
+            text-align: center;
+            padding: 15px;
+            margin: 0;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar li {
+            padding: 10px;
+            border-bottom: 1px solid #444;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .sidebar li img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+        .sidebar li:hover {
+            background-color: #555;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            flex: 1;
+        }
+        .controls button {
+            margin: 0 5px;
+            padding: 10px 20px;
+            background-color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .controls button.active {
+            background-color: #007BFF;
+            color: white;
+        }
+        .controls button:hover:not(.active) {
+            background-color: #ddd;
+        }
+        .iframe-container {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .iframe-container iframe {
+            border: 0;
+            max-height: 100%;
+            max-width: 100%;
+        }
+        .toggle-sidebar {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 10px 20px;
+            margin: 10px;
+            position: absolute;
+            top: 0;
+            left: 250px;
+            transform: translateX(-100%);
+            transition: left 0.3s ease;
+        }
+        .toggle-sidebar.hidden {
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <h2>Temas Disponibles</h2>
+        <ul id="themeList">
+            <!-- Lista de temas con miniaturas -->
+            <li onclick="loadTemplate('kaiadmin')">
+                <img src="https://themewagon.com/wp-content/uploads/2024/06/KaiAdmin-100x100.webp" alt="Kaiadmin">
+                Kaiadmin
+            </li>
+            <li onclick="loadTemplate('scholar')">
+                <img src="https://themewagon.com/wp-content/uploads/2024/04/scholar.png" alt="Scholar">
+                Scholar
+            </li>
+            <!-- Agrega más temas aquí -->
+        </ul>
+    </div>
+    <!-- <button class="toggle-sidebar" id="toggleSidebarButton" onclick="toggleSidebar()">Ocultar</button> -->
+    <div class="main-content">
+        <div class="controls">
+            <div class="button-group">
+                <button id="mobileButton" onclick="resizeIframe('mobile')">Móvil</button>
+                <button id="tabletButton" onclick="resizeIframe('tablet')">Tableta</button>
+                <button id="desktopButton" onclick="resizeIframe('desktop')">Escritorio</button>
+            </div>
+            <button id="selectButton" onclick="sendWhatsAppMessage()">Seleccionar</button>
+        </div>
+        <div class="iframe-container">
+            <iframe id="demoFrame" style="width: 100%; height: 100%;"></iframe>
+        </div>
+    </div>
+    
+    <script>
+        function getParameterByName(name) {
+            const url = window.location.href;
+            const nameEscaped = name.replace(/[\[\]]/g, '\\$&');
+            const regex = new RegExp('[?&]' + nameEscaped + '(=([^&#]*)|&|#|$)');
+            const results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        function updateURLParameter(param, value) {
+            const currentURL = window.location.href;
+            const url = new URL(currentURL);
+            url.searchParams.set(param, value);
+            window.history.replaceState({}, '', url);
+        }
+
+        function resizeIframe(size) {
+            const iframe = document.getElementById('demoFrame');
+            const buttons = document.querySelectorAll('.controls button');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            if (size === 'mobile') {
+                iframe.style.width = '375px';
+                iframe.style.height = '667px';
+                document.getElementById('mobileButton').classList.add('active');
+            } else if (size === 'tablet') {
+                iframe.style.width = '768px';
+                iframe.style.height = '1024px';
+                document.getElementById('tabletButton').classList.add('active');
+            } else if (size === 'desktop') {
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                document.getElementById('desktopButton').classList.add('active');
+            }
+
+            updateURLParameter('size', size);
+        }
+
+        function sendWhatsAppMessage() {
+            const templateName = getParameterByName('template');
+            const size = getParameterByName('size');
+            const message = `He seleccionado la plantilla ${templateName} con el tamaño ${size}.`;
+            const phoneNumber = '1234567890'; // Reemplaza con el número de teléfono real
+            const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const toggleButton = document.getElementById('toggleSidebarButton');
+            sidebar.classList.toggle('hidden');
+            toggleButton.classList.toggle('hidden');
+        }
+
+        function loadTemplate(templateName) {
+            const iframe = document.getElementById('demoFrame');
+            iframe.src = `./themes/${templateName}/index.html`;
+            updateURLParameter('template', templateName);
+        }
+
+        window.onload = function() {
+            const templateName = getParameterByName('template');
+            const size = getParameterByName('size');
+            const iframe = document.getElementById('demoFrame');
+
+            if (templateName) {
+                iframe.src = `./themes/${templateName}/index.html`;
+            }
+
+            if (size) {
+                resizeIframe(size);
+            } else {
+                resizeIframe('desktop'); // Default to desktop if size is not provided
+            }
+        }
+    </script>
+</body>
+</html>
