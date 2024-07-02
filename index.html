@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demo de Plantilla</title>
     <style>
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             width: 100%;
@@ -14,6 +16,7 @@
             flex-direction: row;
             background: linear-gradient(180deg, #2c2c2c, #000);
         }
+
         .sidebar {
             width: 250px;
             background-color: #333;
@@ -21,19 +24,23 @@
             position: relative;
             transition: transform 0.3s ease;
         }
+
         .sidebar.hidden {
             transform: translateX(-100%);
         }
+
         .sidebar h2 {
             text-align: center;
             padding: 15px;
             margin: 0;
         }
+
         .sidebar ul {
             list-style: none;
             padding: 0;
             margin: 0;
         }
+
         .sidebar li {
             padding: 10px;
             border-bottom: 1px solid #444;
@@ -41,20 +48,24 @@
             display: flex;
             align-items: center;
         }
+
         .sidebar li img {
             width: 40px;
             height: 40px;
             margin-right: 10px;
             border-radius: 5px;
         }
+
         .sidebar li:hover {
             background-color: #555;
         }
+
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
+
         .controls {
             display: flex;
             justify-content: space-between;
@@ -64,11 +75,13 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             border-radius: 5px;
         }
+
         .button-group {
             display: flex;
             justify-content: center;
             flex: 1;
         }
+
         .controls button {
             margin: 0 5px;
             padding: 10px 20px;
@@ -78,13 +91,16 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         .controls button.active {
             background-color: #007BFF;
             color: white;
         }
+
         .controls button:hover:not(.active) {
             background-color: #ddd;
         }
+
         .iframe-container {
             flex: 1;
             width: 100%;
@@ -94,11 +110,13 @@
             position: relative;
             overflow: hidden;
         }
+
         .iframe-container iframe {
             border: 0;
             max-height: 100%;
             max-width: 100%;
         }
+
         .toggle-sidebar {
             background-color: #007BFF;
             color: white;
@@ -113,25 +131,29 @@
             transform: translateX(-100%);
             transition: left 0.3s ease;
         }
+
         .toggle-sidebar.hidden {
             left: 0;
         }
     </style>
 </head>
+
 <body>
     <div class="sidebar" id="sidebar">
         <h2>Temas Disponibles</h2>
         <ul id="themeList">
             <!-- Lista de temas con miniaturas -->
-            <li onclick="loadTemplate('kaiadmin')">
-                <img src="https://themewagon.com/wp-content/uploads/2024/06/KaiAdmin-100x100.webp" alt="Kaiadmin">
-                Kaiadmin
-            </li>
-            <li onclick="loadTemplate('scholar')">
-                <img src="https://themewagon.com/wp-content/uploads/2024/04/scholar.png" alt="Scholar">
-                Scholar
-            </li>
-            <!-- Agrega más temas aquí -->
+            <ul id="themeList">
+                <li data-template="kaiadmin" onclick="loadTemplate('kaiadmin')">
+                    <img src="https://themewagon.com/wp-content/uploads/2024/06/KaiAdmin-100x100.webp" alt="Kaiadmin">
+                    Kaiadmin
+                </li>
+                <li data-template="scholar" onclick="loadTemplate('scholar')">
+                    <img src="https://themewagon.com/wp-content/uploads/2024/04/scholar.png" alt="Scholar">
+                    Scholar
+                </li>
+                <!-- Agrega más temas aquí -->
+            </ul>
         </ul>
     </div>
     <!-- <button class="toggle-sidebar" id="toggleSidebarButton" onclick="toggleSidebar()">Ocultar</button> -->
@@ -148,7 +170,7 @@
             <iframe id="demoFrame" style="width: 100%; height: 100%;"></iframe>
         </div>
     </div>
-    
+
     <script>
         function getParameterByName(name) {
             const url = window.location.href;
@@ -211,13 +233,22 @@
             updateURLParameter('template', templateName);
         }
 
-        window.onload = function() {
+        window.onload = function () {
             const templateName = getParameterByName('template');
             const size = getParameterByName('size');
             const iframe = document.getElementById('demoFrame');
+            const themeList = document.getElementById('themeList');
 
-            if (templateName) {
-                iframe.src = `./themes/${templateName}/index.html`;
+            // Obtener el primer elemento de la lista de temas
+            const firstTheme = themeList.querySelector('li');
+            if (!templateName && firstTheme) {
+                const defaultTemplate = firstTheme.getAttribute('data-template');
+                iframe.src = `./themes/${defaultTemplate}/index.html`;
+                updateURLParameter('template', defaultTemplate);
+            } else {
+                if (templateName) {
+                    iframe.src = `./themes/${templateName}/index.html`;
+                }
             }
 
             if (size) {
@@ -226,6 +257,8 @@
                 resizeIframe('desktop'); // Default to desktop if size is not provided
             }
         }
+
     </script>
 </body>
+
 </html>
