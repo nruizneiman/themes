@@ -8,6 +8,7 @@
     
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         body,
@@ -37,7 +38,7 @@
 
         .sidebar h2 {
             text-align: center;
-            padding: 15px;
+            padding: 13px 5px;
             margin: 0;
         }
 
@@ -150,7 +151,7 @@
 
 <body>
     <div class="sidebar" id="sidebar">
-        <h2>Temas Disponibles</h2>
+        <h2><i class="fas fa-paint-brush"></i> Temas Disponibles</h2>
         <ul id="themeList">
             <li data-template="kaiadmin" onclick="loadTemplate('kaiadmin')">
                 <img src="https://themewagon.com/wp-content/uploads/2024/06/KaiAdmin-100x100.webp" alt="Kaiadmin">
@@ -163,15 +164,15 @@
             <!-- Agrega más temas aquí -->
         </ul>
     </div>
-    <!-- <button class="toggle-sidebar" id="toggleSidebarButton" onclick="toggleSidebar()">Ocultar</button> -->
+    <!-- <button class="toggle-sidebar" id="toggleSidebarButton" onclick="toggleSidebar()"><i class="fas fa-eye"></i></button> -->
     <div class="main-content">
         <div class="controls">
             <div class="button-group">
-                <button id="mobileButton" onclick="resizeIframe('mobile')">Móvil</button>
-                <button id="tabletButton" onclick="resizeIframe('tablet')">Tableta</button>
-                <button id="desktopButton" onclick="resizeIframe('desktop')">Escritorio</button>
+                <button id="mobileButton" onclick="resizeIframe('mobile')"><i class="fas fa-mobile-alt"></i></button>
+                <button id="tabletButton" onclick="resizeIframe('tablet')"><i class="fas fa-tablet-alt"></i></button>
+                <button id="desktopButton" onclick="resizeIframe('desktop')"><i class="fas fa-desktop"></i></button>
             </div>
-            <button id="selectButton" onclick="sendWhatsAppMessage()">Seleccionar</button>
+            <button id="selectButton" onclick="sendWhatsAppMessage()"><i class="fab fa-whatsapp"></i> Seleccionar</button>
         </div>
         <div class="iframe-container">
             <iframe id="demoFrame" style="width: 100%; height: 100%;"></iframe>
